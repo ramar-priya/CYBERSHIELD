@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encryption and Decryption Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js">
+    <link rel="stylesheet" href="/static/test_translation.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Text Encryption and Decryption</h1>
+        <form id="encryptionForm" class="mt-4">
+            <div class="form-group">
+                <label for="algorithm">Choose Algorithm:</label>
+                <select id="algorithm" class="form-control" required>
+                    <option value="" disabled selected>Select an algorithm</option>
+                    <option value="aes">AES (Advanced Encryption Standard)</option>
+                    <option value="des">DES (Data Encryption Standard)</option>
+                    <option value="rc4">RC4 (Rivest Cipher 4)</option>
+                    <option value="rabbit">Rabbit</option>
+                    <option value="xor">XOR Cipher</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="keyInputGroup" style="display: none;">
+                <label for="key">Enter Key:</label>
+                <input type="text" id="key" class="form-control" placeholder="Enter Key" required>
+            </div>
+
+            <div class="form-group">
+                <label for="textInput">Text:</label>
+                <textarea id="textInput" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Encrypt</button>
+            <button type="button" class="btn btn-secondary" id="decryptBtn">Decrypt</button>
+        </form>
+
+        <div class="mt-4">
+            <h4>Result:</h4>
+            <p id="result" class="border p-2"></p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#algorithm').change(function () {
+                const algorithmsWithKey = ['aes', 'des', 'rc4', 'rabbit', 'xor'];
+                if (algorithmsWithKey.includes($(this).val())) {
+                    $('#keyInputGroup').show();
+                } else {
+                    $('#keyInputGroup').hide();
+                    $('#key').val('');
+                }
+            });
+
+            $('#encryptionForm').submit(function (event) {
+                event.preventDefault();
+                const algorithm = $('#algorithm').val();
+                const key = $('#key').val();
+                const text = $('#textInput').val();
+                let result;
+
+                switch (algorithm) {
+                    case 'aes':
+                        result = CryptoJS.AES.encrypt(text, key).toString();
+                        break;
+                    case 'des':
+                        result = CryptoJS.DES.encrypt(text, key).toString();
+                        break;
+                    case 'rc4':
+                        result = CryptoJS.RC4.encrypt(text, key).toString();
+                        break;
+                    case 'rabbit':
+                        result = CryptoJS.Rabbit.encrypt(text, key).toString();
+                        break;
+                    case 'xor':
+                        result = xorEncrypt(text, key);
+                        break;
+                    default:
+                        alert('Selected algorithm is not supported yet.');
+                        return;
+                }
+
+                $('#result').text(result);
+            });
+
+            $('#decryptBtn').click(function () {
+                const algorithm = $('#algorithm').val();
+                const key = $('#key').val();
+                const text = $('#textInput').val();
+                let result;
+
+                switch (algorithm) {
+                    case 'aes':
+                        const bytes = CryptoJS.AES.decrypt(text, key);
+                        result = bytes.toString(CryptoJS.enc.Utf8);
+                        break;
+                    case 'des':
+                        const bytesDes = CryptoJS.DES.decrypt(text, key);
+                        result = bytesDes.toString(CryptoJS.enc.Utf8);
+                        break;
+                    case 'rc4':
+                        const bytesRc4 = CryptoJS.RC4.decrypt(text, key);
+                        result = bytesRc4.toString(CryptoJS.enc.Utf8);
+                        break;
+                    case 'rabbit':
+                        const bytesRabbit = CryptoJS.Rabbit.decrypt(text, key);
+                        result = bytesRabbit.toString(CryptoJS.enc.Utf8);
+                        break;
+                    case 'xor':
+                        result = xorDecrypt(text, key);
+                        break;
+                    default:
+                        alert('Selected algorithm is not supported for decryption yet.');
+                        return;
+                }
+
+                $('#result').text(result || 'Decryption failed. Check your key and text.');
+            });
+
+            function xorEncrypt(text, key) {
+                let encrypted = '';
+                for (let i = 0; i < text.length; i++) {
+                    encrypted += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+                }
+                return btoa(encrypted); 
+            }
+
+            function xorDecrypt(encrypted, key) {
+                const decoded = atob(encrypted); 
+                let decrypted = '';
+                for (let i = 0; i < decoded.length; i++) {
+                    decrypted += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+                }
+                return decrypted;
+            }
+        });
+    </script>
+</body>
+
+</html>

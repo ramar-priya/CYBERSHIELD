@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash & Dehash Tool</title>
+    <link rel="stylesheet" href="/static/hashing.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Hash & Dehash Tool</h1>
+        <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+        <div class="dropdown">
+            <button class="dropbtn">Select Algorithm</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="setAlgorithm('MD5')">MD5</a>
+                <a href="#" onclick="setAlgorithm('SHA1')">SHA1</a>
+                <a href="#" onclick="setAlgorithm('SHA256')">SHA256</a>
+            </div>
+        </div>
+        <p id="selectedAlgorithm">Selected Algorithm: None</p>
+        <button onclick="hashText()">Hash</button>
+        <button onclick="dehashText()">Dehash</button>
+        <textarea id="outputText" readonly placeholder="Output will appear here..."></textarea>
+    </div>
+    <script src="/static/hashing.js"></script>
+</body>
+</html>

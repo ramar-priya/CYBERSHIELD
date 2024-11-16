@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nmap Scanner</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Nmap Scanner</h1>
+    <div id="form-container">
+        <form action="/scan" method="post">
+            <label for="target">Enter IP Address or Domain:</label>
+            <input type="text" id="target" name="target" placeholder="e.g., 192.168.1.1" required>
+            <button type="submit">Scan</button>
+        </form>
+    </div>
+
+    <div id="result">
+        <h2>Scan Results</h2>
+        {% if scan_output %}
+            <pre id="scan-output">{{ scan_output }}</pre>
+            <a href="/download">Download Results as PDF</a>
+        {% else %}
+            <p>No results to display. Enter a target and click "Scan".</p>
+        {% endif %}
+    </div>
+
+    <footer>
+        &copy; 2024 Hacker Scanner
+    </footer>
+</body>
+</html>

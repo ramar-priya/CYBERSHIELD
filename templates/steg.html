@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steganography</title>
+    <link rel="stylesheet" href="/static/steg.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Steganography Encoding and Decoding</h1>
+
+        <div class="form-group">
+            <label for="imageInput">Select Image:</label>
+            <input type="file" id="imageInput" accept="image/*">
+        </div>
+
+        <div class="form-group">
+            <label for="messageInput">Message to Encode:</label>
+            <textarea id="messageInput" rows="4"></textarea>
+        </div>
+
+        <button id="encodeButton">Encode Message</button>
+        <button id="downloadButton" style="display:none;">Download Image</button>
+        <button id="decodeButton">Decode Message</button>
+
+        <h2>Output Image:</h2>
+        <canvas id="outputCanvas"></canvas>
+
+        <h2>Decoded Message:</h2>
+        <p id="decodedMessage"></p>
+    </div>
+
+    <script src="/static/steg.js"></script>
+</body>
+</html>
