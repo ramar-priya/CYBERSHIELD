@@ -130,23 +130,34 @@ span{
     font-size: 1.6rem;
 }
 
-.home-img{
-    border-radius: 50%;
+.home-img {
+    border-radius: 10px; /* Slight rounded corners for aesthetics */
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(183, 75, 75, 0.5); /* Subtle shadow for a modern look */
+    width: 60vw; /* Width of the container */
+    height: auto; /* Height of the container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000; /* Background color in case the image doesn't fully fill the space */
 }
 
-.home-img img{
-    position: relative;
-    width: 32vw;
-    border-radius: 50%;
-    box-shadow: 0 0 25px solid #b74b4b;
+.home-img img {
+    max-width: 100%;
+    max-height: 50%;
+    object-fit: contain; /* Ensures the entire image is visible within the container */
+    border-radius: 10px; /* Matches the container for a clean look */
     cursor: pointer;
-    transition: 0.2s linear;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.home-img img:hover{
-    font-size: 1.8rem;
-    font-weight: 500;
+.home-img img:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0 12px 30px rgba(183, 75, 75, 0.8); /* Enhanced shadow on hover */
 }
+
+
+
 
 .social-icons a{
     display: inline-flex;
@@ -254,4 +265,15 @@ span{
         width: 70vw;
         margin-top: 4rem;
     }
+}
+footer {
+    background: #101010;
+    color: #aaa;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0;
 }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSLookup Tool</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #0f0f0f;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #00ff00;
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            width: 50%;
+            background-color: #1a1a1a;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            background-color: #000;
+            color: #00ff00;
+        }
+        button {
+            padding: 10px 20px;
+            color: #000;
+            background-color: #00ff00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00cc00;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>NSLookup Tool</h1>
+    <form method="POST">
+        <label for="query">Enter a Domain or IP Address:</label>
+        <br>
+        <input type="text" id="query" name="query" placeholder="e.g., google.com or 8.8.8.8" required>
+        <br>
+        <button type="submit">Lookup</button>
+    </form>
+
+    {% if results %}
+    <div class="results">
+        <h2>Lookup Results:</h2>
+        <ul>
+            <li><strong>Type:</strong> {{ results.type }}</li>
+            {% if results.reverse_domain %}
+                <li><strong>Reverse Domain:</strong> {{ results.reverse_domain }}</li>
+            {% endif %}
+            {% if results.ip %}
+                <li><strong>IP Address:</strong> {{ results.ip }}</li>
+            {% endif %}
+            {% if results.mx %}
+                <li><strong>MX Records:</strong>
+                    <ul>
+                        {% for mx in results.mx %}
+                            <li>{{ mx }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+            {% if results.ns %}
+                <li><strong>NS Records:</strong>
+                    <ul>
+                        {% for ns in results.ns %}
+                            <li>{{ ns }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+            {% if results.txt %}
+                <li><strong>TXT Records:</strong>
+                    <ul>
+                        {% for txt in results.txt %}
+                            <li>{{ txt }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+</body>
+</html>

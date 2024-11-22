@@ -1,0 +1,46 @@
+Starting Nmap 7.94 ( https://nmap.org ) at 2024-11-21 22:33 India Standard Time
+Nmap scan report for 127.0.0.1
+Host is up (0.00028s latency).
+Not shown: 997 closed tcp ports (reset)
+PORT     STATE SERVICE       VERSION
+135/tcp  open  msrpc         Microsoft Windows RPC
+445/tcp  open  microsoft-ds?
+5000/tcp open  upnp?
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port5000-TCP:V=7.94%I=7%D=11/21%Time=673F67FC%P=i686-pc-windows-windows
+SF:%r(GetRequest,7B7,"HTTP/1\.1\x20200\x20OK\r\nServer:\x20Werkzeug/3\.0\.
+SF:4\x20Python/3\.12\.5\r\nDate:\x20Thu,\x2021\x20Nov\x202024\x2017:03:56\
+SF:x20GMT\r\nContent-Type:\x20text/html;\x20charset=utf-8\r\nContent-Lengt
+SF:h:\x201800\r\nConnection:\x20close\r\n\r\n\x20\x20\x20\x20\n<head>\n\x2
+SF:0\x20\x20\x20<meta\x20charset=\"UTF-8\">\n\x20\x20\x20\x20<meta\x20name
+SF:=\"viewport\"\x20content=\"width=device-width,\x20initial-scale=1\.0\">
+SF:\n\x20\x20\x20\x20<link\x20rel=\"stylesheet\"\x20href=\"https://cdnjs\.
+SF:cloudflare\.com/ajax/libs/font-awesome/6\.5\.2/css/all\.min\.css\">\n\x
+SF:20\x20\x20\x20<link\x20rel=\"stylesheet\"\x20href=\"/static/style1\.css
+SF:\">\n\x20\x20\x20\x20<title>CyberShield</title>\n</head>\n<body>\n\x20\
+SF:x20\x20\x20<header>\n\x20\x20\x20\x20\x20\x20\x20\x20<a\x20href=\"#\"\x
+SF:20class=\"logo\"></a>\n\n\x20\x20\x20\x20\x20\x20\x20\x20<nav>\n\x20\x2
+SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<a\x20href=\"#\"\x20class=\"ac
+SF:tive\">\x20Home</a>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<a
+SF:\x20href=\"features\"\x20>Features</a>\n\x20\x20\x20\x20\x20\x20\x20\x2
+SF:0\x20\x20\x20\x20<a\x20href=\"about\"\x20>About\x20us</a>\n\x20\x20\x20
+SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20<a\x20href=\"privacy\"\x20>Privacy<
+SF:/a>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\n\x20\x20\x20\x20
+SF:\x20\x20\x20\x20</nav>\n\x20\x20\x20\x20</header>\n\x20\x20\x20\x20<sec
+SF:tion\x20class=\"home\">\n\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=
+SF:\"home-img\">\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20
+SF:src=\"main\.jpg\"\x20alt=\"\">\n\x20\x20\x20\x20\x20\x20\x20\x20</div>\
+SF:n\x20\x20")%r(RTSPRequest,16C,"<!DOCTYPE\x20HTML>\n<html\x20lang=\"en\"
+SF:>\n\x20\x20\x20\x20<head>\n\x20\x20\x20\x20\x20\x20\x20\x20<meta\x20cha
+SF:rset=\"utf-8\">\n\x20\x20\x20\x20\x20\x20\x20\x20<title>Error\x20respon
+SF:se</title>\n\x20\x20\x20\x20</head>\n\x20\x20\x20\x20<body>\n\x20\x20\x
+SF:20\x20\x20\x20\x20\x20<h1>Error\x20response</h1>\n\x20\x20\x20\x20\x20\
+SF:x20\x20\x20<p>Error\x20code:\x20400</p>\n\x20\x20\x20\x20\x20\x20\x20\x
+SF:20<p>Message:\x20Bad\x20request\x20version\x20\('RTSP/1\.0'\)\.</p>\n\x
+SF:20\x20\x20\x20\x20\x20\x20\x20<p>Error\x20code\x20explanation:\x20400\x
+SF:20-\x20Bad\x20request\x20syntax\x20or\x20unsupported\x20method\.</p>\n\
+SF:x20\x20\x20\x20</body>\n</html>\n");
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 109.28 seconds

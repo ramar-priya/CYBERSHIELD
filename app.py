@@ -5,6 +5,9 @@ from fpdf import FPDF
 from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
 import requests
+import socket
+import dns.resolver
+import dns.reversename
 
 app = Flask(__name__)
 
@@ -50,6 +53,11 @@ def home():
 @app.route('/features')
 def features():
     return render_template('features.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 
 @app.route('/privacy')
 def privacy():
@@ -131,6 +139,153 @@ def crawler():
         return render_template('results.html', urls=urls[:10])
 
     return render_template('crawler.html')
+
+def domain_to_ip(domain):
+    try:
+        ip = socket.gethostbyname(domain)
+        return ip
+    except socket.gaierror:
+        return "Invalid domain or unable to resolve."
+
+# Function for Reverse DNS Lookup (PTR Record)
+def ip_to_domain(ip):
+    try:
+        reverse_ip = dns.reversename.from_address(ip)
+        domain = dns.resolver.resolve(reverse_ip, "PTR")
+        return domain[0].to_text()
+    except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
+        return "No PTR record found."
+
+# Function to fetch MX Records
+def get_mx_records(domain):
+    try:
+        result = dns.resolver.resolve(domain, 'MX')
+        return [str(rdata.exchange) for rdata in result]
+    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+        return ["No MX records found."]
+
+# Function to fetch NS Records
+def get_ns_records(domain):
+    try:
+        result = dns.resolver.resolve(domain, 'NS')
+        return [str(rdata.target) for rdata in result]
+    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+        return ["No NS records found."]
+
+# Function to fetch TXT Records
+def get_txt_records(domain):
+    try:
+        result = dns.resolver.resolve(domain, 'TXT')
+        return [rdata.to_text() for rdata in result]
+    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+        return ["No TXT records found."]
+
+@app.route("/dnslookup", methods=["GET", "POST"])
+def nslookup_tool():
+    results = None
+
+    if request.method == "POST":
+        user_input = request.form.get("query")
+
+        # Check for empty input
+        if not user_input or user_input.strip() == "":
+            return render_template("index.html", results={"error": "Please provide a valid input."})
+
+        results = {}
+
+        try:
+            # If input is an IP, perform reverse lookup
+            socket.inet_aton(user_input)
+            results["type"] = "IP Address"
+            results["reverse_domain"] = ip_to_domain(user_input)
+        except socket.error:
+            # Else, assume it's a domain
+            results["type"] = "Domain"
+            results["ip"] = domain_to_ip(user_input)
+            results["mx"] = get_mx_records(user_input)
+            results["ns"] = get_ns_records(user_input)
+            results["txt"] = get_txt_records(user_input)
+
+    return render_template("dnslookup.html", results=results)
+
+def caesar_cipher(text, shift, decrypt=False):
+    if decrypt:
+        shift = -shift
+    result = ""
+    for char in text:
+        if char.isalpha():
+            start = ord('A') if char.isupper() else ord('a')
+            result += chr((ord(char) - start + shift) % 26 + start)
+        else:
+            result += char
+    return result
+
+def atbash_cipher(text):
+    result = ""
+    for char in text:
+        if char.isalpha():
+            start = ord('A') if char.isupper() else ord('a')
+            result += chr(start + 25 - (ord(char) - start))
+        else:
+            result += char
+    return result
+
+def substitution_cipher(text, key, decrypt=False):
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    key = key.upper()
+    if decrypt:
+        mapping = {key[i]: alphabet[i] for i in range(26)}
+    else:
+        mapping = {alphabet[i]: key[i] for i in range(26)}
+    result = ""
+    for char in text.upper():
+        result += mapping.get(char, char)
+    return result
+
+def reverse_cipher(text):
+    return text[::-1]
+
+def vigenere_cipher(text, key, decrypt=False):
+    key = key.upper()
+    result = ""
+    key_index = 0
+    for char in text:
+        if char.isalpha():
+            start = ord('A') if char.isupper() else ord('a')
+            shift = ord(key[key_index]) - ord('A')
+            shift = -shift if decrypt else shift
+            result += chr((ord(char) - start + shift) % 26 + start)
+            key_index = (key_index + 1) % len(key)
+        else:
+            result += char
+    return result
+
+@app.route('/encryption')
+def enc():
+    return render_template('encryption.html')
+
+
+@app.route('/encrypt', methods=['POST'])
+def encrypt():
+    text = request.form.get('text')
+    cipher_type = request.form.get('cipher')
+    shift = int(request.form.get('shift', 0))
+    key = request.form.get('key', '')
+
+    if cipher_type == "Caesar":
+        result = caesar_cipher(text, shift)
+    elif cipher_type == "Atbash":
+        result = atbash_cipher(text)
+    elif cipher_type == "Substitution":
+        result = substitution_cipher(text, key)
+    elif cipher_type == "Reverse":
+        result = reverse_cipher(text)
+    elif cipher_type == "Vigenere":
+        result = vigenere_cipher(text, key)
+    else:
+        result = "Invalid cipher selected."
+
+    return render_template('encryption.html', result=result, text=text)
 
 if __name__ == "__main__":
     app.run(debug=True)
